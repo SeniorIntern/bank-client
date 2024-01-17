@@ -1,10 +1,7 @@
-import { Button } from "@radix-ui/themes";
+import Dashboard from "./Dashboard"
+import GuestDashboard from "./GuestDashboard"
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <button>Test</button>
-      <Button>Radix Btn</Button>
-    </main>
-  )
+  if (false) return <GuestDashboard />
+  else return <Dashboard />
 }
