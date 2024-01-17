@@ -1,10 +1,17 @@
+'use client'
+
 import Link from "next/link"
 import { Text } from "@radix-ui/themes"
 import SectionContainer from "./SectionContainer"
 import Payment from "./Payment"
 import Statement from "./Statement"
+import Transaction from "./Transaction"
+import { useSearchParams } from 'next/navigation'
 
 const Dashboard = () => {
+  const searchParams = useSearchParams()
+  const action = searchParams.get('action')
+
   return (
     <div>
       <div className="bg-[var(--primary-gray)] flex justify-center">
@@ -57,27 +64,33 @@ const Dashboard = () => {
                 </article>
 
                 <article className="p-1 flex flex-col h-fit bg-[var(--primary-gray)] grow">
-                  <Link href='/' className="bg-[var(--primary-blue)] py-2 px-3">
+                  <Link
+                    href='/?action=statement'
+                    className={`${action === 'statement' && 'bg-[var(--primary-blue)]'} py-2 px-3`}
+                  >
                     View Statement
                   </Link>
-                  <Link href='/' className="py-2 px-3">
+                  <Link
+                    href='/?action=payment'
+                    className={`${action === 'payment' && 'bg-[var(--primary-blue)]'} py-2 px-3`}
+                  >
                     Make a payment
                   </Link>
-                  <Link href='/' className="py-2 px-3">
+                  <Link
+                    href='/'
+                    className={`${action === 'more' && 'bg-[var(--primary-blue)]'} py-2 px-3`}
+                  >
                     More actions
                   </Link>
                 </article>
               </div>
 
               {
-                true &&
-                <Statement />
+                action === 'statement' ? <Statement />
+                  : action === 'payment' ? <Payment />
+                    : <Transaction />
               }
 
-              {
-                false &&
-                <Payment />
-              }
             </section>
           </div>
         </SectionContainer>

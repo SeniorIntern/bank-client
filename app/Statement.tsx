@@ -1,4 +1,3 @@
-'use client'
 import { Button, Table, Text } from "@radix-ui/themes"
 import Link from "next/link"
 
