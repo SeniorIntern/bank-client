@@ -1,7 +1,12 @@
-import { Button, Table, Text } from "@radix-ui/themes"
+import { Table, Text } from "@radix-ui/themes"
 import Link from "next/link"
+import usePayment from './hooks/usePayment'
+import { formatedDate } from "./helpers/formatedDate";
 
-const Statement = () => {
+const Statement = ({ userId }: { userId: string }) => {
+  const { payments, isLoading } = usePayment(userId)
+  if (isLoading) return <div>Loading...</div>
+
   return (
     <section className="flex flex-col gap-4">
       <div className="py-2">
@@ -22,11 +27,13 @@ const Statement = () => {
       <hr />
       <div className="flex justify-between">
         <Text className="font-bold">January 2024</Text>
-        <Button>Download PDFs</Button>
+        <Link href={'/downloadStatement'}>
+          Download PDFs
+        </Link>
       </div>
       <hr />
 
-      <div className="">
+      <div>
         <Table.Root variant="surface">
           <Table.Header>
             <Table.Row>
@@ -34,31 +41,21 @@ const Statement = () => {
               <Table.ColumnHeaderCell>Account number</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>IN (￡)</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>OUT (￡)</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Balance</Table.ColumnHeaderCell>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
-            <Table.Row>
-              <Table.Cell>
-                <p>12 Jan 2024</p>
-                <span className="blue-text">Nirmal Khand Khawas</span>
-              </Table.Cell>
-              <Table.Cell>12133</Table.Cell>
-              <Table.Cell>12.00</Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell>22300.00</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>
-                <p>02 Jan 2024</p>
-                <span className="blue-text">Nirmal Khand Khawas</span>
-              </Table.Cell>
-              <Table.Cell>23443</Table.Cell>
-              <Table.Cell></Table.Cell>
-              <Table.Cell>30.00</Table.Cell>
-              <Table.Cell>22300.00</Table.Cell>
-            </Table.Row>
+            {payments.map(payment => (
+              <Table.Row key={payment._id}>
+                <Table.Cell>
+                  <p>{payment.target}</p>
+                  <span className="blue-text">{formatedDate(payment.date)}</span>
+                </Table.Cell>
+                <Table.Cell>{payment.party._id}</Table.Cell>
+                <Table.Cell>{payment.entry === 'IN' && payment.amount}</Table.Cell>
+                <Table.Cell>{payment.entry === 'OUT' && payment.amount}</Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table.Root>
       </div>

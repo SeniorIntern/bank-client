@@ -7,10 +7,17 @@ import Payment from "./Payment"
 import Statement from "./Statement"
 import Transaction from "./Transaction"
 import { useSearchParams } from 'next/navigation'
+import useUser from './hooks/useUser'
+import useUserStore from "./store"
+import { formatedDate } from "./helpers/formatedDate"
 
 const Dashboard = () => {
   const searchParams = useSearchParams()
   const action = searchParams.get('action')
+  const { token } = useUserStore()
+  const { user, isLoading } = useUser(token)
+
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <div>
@@ -18,17 +25,17 @@ const Dashboard = () => {
         <SectionContainer>
           <div className="h-[8vh] flex items-center justify-between">
             <div className="w-fit">
-              <p>Mr. Allen Demoskvhi</p>
-              <p>Saturday, 09 January 2024</p>
+              <Text as="p" weight='bold'>{user.name}</Text>
+              <Text>{formatedDate()}</Text>
             </div>
 
             <div className="w-fit flex items-center gap-4">
-              <p>Your Balance: <span className="font-bold">￡7,230.11</span></p>
-              <p className="font-bold">Allen</p>
+              <p>Your Balance: <span className="font-bold">￡{user.balance}</span></p>
+              <p className="font-bold">{user.name}</p>
               <div
-                className="flex items-center justify-center bg-[var(--primary-blue)] w-12 h-12 rounded-full text-white"
+                className="flex items-center justify-center bg-[var(--primary-blue)] w-12 h-12 rounded-full text-white font-bold"
               >
-                AL
+                {user?.name?.slice(0, 2).toUpperCase()}
               </div>
             </div>
           </div>
@@ -39,10 +46,10 @@ const Dashboard = () => {
         <SectionContainer>
           <div className="h-[80vh] flex justify-between gap-16 mt-[4vh]">
             <aside className="flex flex-col gap-2 w-2/12">
-              <Link href='/' className="w-full bg-[var(--primary-gray)] p-2">
+              <Link href='/' className="w-full p-2 hover:bg-[var(--primary-gray)]">
                 <Text>Home</Text>
               </Link>
-              <Link href='/login' className="w-full p-2">
+              <Link href='/logout' className="w-full p-2 hover:bg-[var(--primary-gray)]">
                 <Text>Log Off</Text>
               </Link>
             </aside>
@@ -51,12 +58,12 @@ const Dashboard = () => {
               <div
                 className="flex gap-8 bg-[var(--secondary-black)] border-t-[4px] border-[var(--primary-blue)] rounded-md"
               >
-                <article className="w-3/5 flex flex-col gap-4">
+                <article className="w-3/5 flex flex-col gap-4 p-1">
                   <div className="flex justify-between">
-                    <p>ACCOUNT <span className="blue-text">CLASSIC</span></p>
-                    <p>NUMBER <span className="blue-text">0879869</span></p>
+                    <p>ACCOUNT <span className="blue-text">{user?.accountType?.toUpperCase()}</span></p>
+                    <p>NUMBER <span className="blue-text">{user._id}</span></p>
                   </div>
-                  <Text className="text-[2rem] font-bold">￡7,230.11</Text>
+                  <Text className="text-[2rem] font-bold">￡{user.balance}</Text>
                   <hr />
                   <Text>
                     Switch to us using the Current Account Switch Service, which transfers everything from your previous account in just 7 working days.
@@ -66,29 +73,23 @@ const Dashboard = () => {
                 <article className="p-1 flex flex-col h-fit bg-[var(--primary-gray)] grow">
                   <Link
                     href='/?action=statement'
-                    className={`${action === 'statement' && 'bg-[var(--primary-blue)]'} py-2 px-3`}
+                    className={`${action === 'statement' && 'bg-[var(--primary-blue)]'} py-2 px-3 hover:bg-[var(--primary-blue)]`}
                   >
                     View Statement
                   </Link>
                   <Link
                     href='/?action=payment'
-                    className={`${action === 'payment' && 'bg-[var(--primary-blue)]'} py-2 px-3`}
+                    className={`${action === 'payment' && 'bg-[var(--primary-blue)]'} py-2 px-3 hover:bg-[var(--primary-blue)]`}
                   >
                     Make a payment
-                  </Link>
-                  <Link
-                    href='/'
-                    className={`${action === 'more' && 'bg-[var(--primary-blue)]'} py-2 px-3`}
-                  >
-                    More actions
                   </Link>
                 </article>
               </div>
 
               {
-                action === 'statement' ? <Statement />
-                  : action === 'payment' ? <Payment />
-                    : <Transaction />
+                action === 'statement' ? <Statement userId={user._id} />
+                  : action === 'payment' ? <Payment userId={user._id} />
+                    : <Transaction userId={user._id} />
               }
 
             </section>
