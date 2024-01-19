@@ -11,6 +11,7 @@ import OnMount from '../OnMount'
 import toast, { Toaster, } from 'react-hot-toast'
 import { apiClient } from '../services/api-client'
 import { useRouter } from 'next/navigation'
+import useUserStore from '../store'
 
 const registerData = z.object({
   name: z.string().min(3, { message: "Username is required" }).max(120),
@@ -18,19 +19,23 @@ const registerData = z.object({
   password: z.string().min(3, { message: "Password is required" }),
   accountType: z.string().min(3, { message: "Please select an account type" }),
   gender: z.string().min(3, { message: "Please select a gender" }),
-  title: z.string().min(3, { message: "Title is required" }),
+  title: z.string().min(2, { message: "Title is required" }),
   postCode: z.string().min(3, { message: "Post code is required" }),
-  cob: z.string().min(3, { message: "Country of birth is required" }),
+  cob: z.string().min(2, { message: "Country of birth is required" }),
   dob: z.string().min(3, { message: "Date of birth is required" }),
   phone: z.string().min(3, { message: "Phone number is required" }),
-  address: z.string().min(3, { message: "Address is required" })
+  address: z.string().min(2, { message: "Address is required" })
 })
 
 type FormData = z.infer<typeof registerData>
 
 const page = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(registerData) })
   const router = useRouter()
+
+  const { token } = useUserStore()
+  if (token) router.push('/')
+
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(registerData) })
 
   const onSubmit = (data: FieldValues) => {
     apiClient.post('/users', {
@@ -78,13 +83,13 @@ const page = () => {
 
                 <div>
                   <label className='block'>Email</label>
-                  <input {...register('email')} placeholder='Enter your email' style={formInputStyle} />
+                  <input {...register('email')} type='email' placeholder='Enter your email' style={formInputStyle} />
                   <span className='text-red-600 text-[0.8rem]'>{errors.email && errors.email.message}</span>
                 </div>
 
                 <div>
                   <label className='block'>Password</label>
-                  <input {...register('password')} placeholder='Enter your password' style={formInputStyle} />
+                  <input {...register('password')} type='password' placeholder='Enter your password' style={formInputStyle} />
                   <span className='text-red-600 text-[0.8rem]'>{errors.password && errors.password.message}</span>
                 </div>
 

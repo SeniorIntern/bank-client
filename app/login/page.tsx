@@ -62,13 +62,13 @@ const page = () => {
             </Text>
             <div>
               <label className='block'>Email</label>
-              <input {...register('email')} placeholder='Enter your email' style={formInputStyle} />
+              <input {...register('email')} type='email' placeholder='Enter your email' style={formInputStyle} />
               <span className='text-red-600 text-[0.8rem]'>{errors.email && errors.email.message}</span>
             </div>
 
             <div>
               <label className='block'>Password</label>
-              <input {...register('password')} placeholder='Enter your password' style={formInputStyle} />
+              <input {...register('password')} type='password' placeholder='Enter your password' style={formInputStyle} />
               <span className='text-red-600 text-[0.8rem]'>{errors.password && errors.password.message}</span>
             </div>
 
