@@ -52,7 +52,7 @@ const page = () => {
     <OnMount>
       <PageContainer>
         <Toaster />
-        <div className='flex'>
+        <div className='flex justify-center'>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className='w-2/5 flex flex-col gap-8 justify-between'
