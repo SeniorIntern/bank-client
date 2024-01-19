@@ -10,6 +10,7 @@ import { useSearchParams } from 'next/navigation'
 import useUser from './hooks/useUser'
 import useUserStore from "./store"
 import { formatedDate } from "./helpers/formatedDate"
+import classNames from 'classnames'
 
 const Dashboard = () => {
   const searchParams = useSearchParams()
@@ -73,13 +74,23 @@ const Dashboard = () => {
                 <article className="p-1 flex flex-col h-fit bg-[var(--primary-gray)] grow">
                   <Link
                     href='/?action=statement'
-                    className={`${action === 'statement' && 'bg-[var(--primary-blue)]'} py-2 px-3 hover:bg-[var(--primary-blue)]`}
+                    className={classNames(
+                      'py-2 px-3 hover:bg-[var(--primary-blue)]',
+                      {
+                        'bg-[var(--primary-blue)]': action === 'statement'
+                      }
+                    )}
                   >
                     View Statement
                   </Link>
                   <Link
                     href='/?action=payment'
-                    className={`${action === 'payment' && 'bg-[var(--primary-blue)]'} py-2 px-3 hover:bg-[var(--primary-blue)]`}
+                    className={classNames(
+                      'py-2 px-3 hover:bg-[var(--primary-blue)]',
+                      {
+                        'bg-[var(--primary-blue)]': action === 'payment'
+                      }
+                    )}
                   >
                     Make a payment
                   </Link>
@@ -95,7 +106,7 @@ const Dashboard = () => {
             </section>
           </div>
         </SectionContainer>
-      </div>
+      </div >
     </div >
   )
 }
