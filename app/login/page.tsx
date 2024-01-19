@@ -72,7 +72,9 @@ const page = () => {
               <span className='text-red-600 text-[0.8rem]'>{errors.password && errors.password.message}</span>
             </div>
 
-            <Button type='submit' className='w-full'>Login</Button>
+            <button type="submit" className="w-fit mx-auto px-6 py-2 rounded-md text-white font-bold bg-[var(--primary-blue)]" >
+              Login
+            </button>
           </form>
 
           <article className='w-2/5'>

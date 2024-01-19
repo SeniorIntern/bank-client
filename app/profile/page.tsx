@@ -5,13 +5,16 @@ import useUserStore from '../store'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import OnMount from '../OnMount'
+import { useEffect } from 'react'
 
 const page = () => {
   const router = useRouter()
   const { token } = useUserStore()
-
-  if (!token) router.push('/login')
   const { user } = useUser(token)
+
+  useEffect(() => {
+    if (!token) router.push('/login')
+  }, [])
 
   return (
     <OnMount>
@@ -61,9 +64,6 @@ const page = () => {
               <Flex justify='center' gap='8'>
                 <Link href='/logout' className="w-fit p-2 bg-[var(--primary-blue)] rounded-md px-8">
                   <Text>Log Off</Text>
-                </Link>
-                <Link href='/profile/edit' className="w-fit p-2 border-[1px] border-[var(--primary-blue)] rounded-md px-8">
-                  <Text>Edit Your Personal Details</Text>
                 </Link>
               </Flex>
             </Flex>

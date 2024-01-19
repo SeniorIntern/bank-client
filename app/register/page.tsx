@@ -162,7 +162,9 @@ const page = () => {
             </Flex>
 
             <Flex justify='center'>
-              <Button type='submit' className='mx-auto px-10'>Register</Button>
+              <button type="submit" className="w-fit mx-auto px-10 py-2 rounded-md text-white font-bold bg-[var(--primary-blue)]" >
+                Register
+              </button>
             </Flex>
           </form>
 

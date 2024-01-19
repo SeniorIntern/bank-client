@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FieldValues, useForm } from 'react-hook-form'
 import { apiClient } from "./services/api-client"
 import toast, { Toaster } from "react-hot-toast"
-import { User } from "./hooks/useUser"
 import { SetStateAction, Dispatch } from "react"
+import { User } from "./services/user-service"
 
 type Props = {
   userId: string,
@@ -44,21 +44,13 @@ const Payment = ({ userId, setUser }: Props) => {
       </div>
       <hr />
       <div className="flex flex-col gap-2 bg-[var(--secondary-black)] p-2 rounded-md">
-        {/*
-        <Text>Send money from</Text>
-        <div className="w-5/6 border-t-[4px] border-[var(--primary-blue)] rounded-md bg-[var(--primary-gray)] p-2">
-          <div className="flex justify-between">
-            <p>ACCOUNT <span className="blue-text">CLASSIC</span></p>
-            <p>NUMBER <span className="blue-text">0879869</span></p>
-          </div>
-          <Text className="text-[2rem] font-bold">￡7,230.11</Text>
-        </div>
-        */}
 
         <Text>To</Text>
         <Dialog.Root>
           <Dialog.Trigger>
-            <Button className="w-fit">Pay someone {'>'}</Button>
+            <button className="w-fit px-6 py-2 rounded-md text-white font-bold bg-[var(--primary-blue)]" >
+              Pay someone {'>'}
+            </button>
           </Dialog.Trigger>
 
           <Dialog.Content style={{ maxWidth: 450 }}>
@@ -99,11 +91,12 @@ const Payment = ({ userId, setUser }: Props) => {
 
               <Flex gap="3" mt="4" justify="end">
                 <Dialog.Close>
-                  <Button variant="soft" color="gray">
+                  <button type="submit" className="w-fit px-6 py-2 rounded-md text-white font-bold bg-[var(--primary-gray)]" >
                     Cancel
-                  </Button>
+                  </button>
                 </Dialog.Close>
-                <Button type="submit">Continue</Button>
+                <button type="submit" className="w-fit px-6 py-2 rounded-md text-white font-bold bg-[var(--primary-blue)]" >
+                  Continue</button>
               </Flex>
             </form>
 

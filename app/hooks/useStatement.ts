@@ -45,7 +45,7 @@ const useStatement = (token: string) => {
     })
 
     return () => controller.abort()
-  }, [])
+  }, [token])
 
   return { payments, error, isLoading }
 }

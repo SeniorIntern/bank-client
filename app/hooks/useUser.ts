@@ -1,21 +1,6 @@
 import { useEffect, useState } from "react"
-import { apiClient } from '../services/api-client'
 import { CanceledError } from "axios"
-
-export type User = {
-  _id: string,
-  name: string,
-  email: string,
-  accountType: string,
-  balance: number,
-  gender: string,
-  title: string,
-  postCode: string,
-  cob: string
-  dob: string,
-  phone: string,
-  address: string
-}
+import userService, { User } from "../services/user-service"
 
 const useUser = (token: string) => {
   const [user, setUser] = useState<User>({} as User)
@@ -23,13 +8,10 @@ const useUser = (token: string) => {
   const [error, setError] = useState<string>("")
 
   useEffect(() => {
-    const controller = new AbortController()
     setIsLoading(false)
-    apiClient.get<User>('/users/me', {
-      signal: controller.signal, headers: {
-        'x-auth-token': token
-      }
-    }).then(data => {
+    const { request, cancel } = userService.get<User>(token)
+
+    request.then(data => {
       setUser(data.data)
       setIsLoading(false)
     }).catch(err => {
@@ -38,7 +20,7 @@ const useUser = (token: string) => {
       setIsLoading(false)
     })
 
-    return () => controller.abort()
+    return () => cancel()
   }, [token])
 
   return { user, setUser, error, isLoading }
