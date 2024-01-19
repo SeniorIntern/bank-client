@@ -93,17 +93,6 @@ const Statement = ({ userId }: { userId: string }) => {
                     <Table.Cell>{payment.entry === 'OUT' && payment.amount}</Table.Cell>
                   </Table.Row>
                 ))}
-                {filteredData.map(payment => (
-                  <Table.Row key={payment._id}>
-                    <Table.Cell>
-                      <p>{payment.target}</p>
-                      <span className="blue-text">{formatedDate(payment.date)}</span>
-                    </Table.Cell>
-                    <Table.Cell>{payment.party._id}</Table.Cell>
-                    <Table.Cell>{payment.entry === 'IN' && payment.amount}</Table.Cell>
-                    <Table.Cell>{payment.entry === 'OUT' && payment.amount}</Table.Cell>
-                  </Table.Row>
-                ))}
               </Table.Body>
             </Table.Root>
             :

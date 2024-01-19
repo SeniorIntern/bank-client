@@ -39,7 +39,7 @@ const useUser = (token: string) => {
     })
 
     return () => controller.abort()
-  }, [])
+  }, [token])
 
   return { user, setUser, error, isLoading }
 }
