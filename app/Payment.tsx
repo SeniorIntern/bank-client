@@ -1,16 +1,19 @@
 'use client'
 import { Button, Dialog, Flex, Text } from "@radix-ui/themes"
-import usePayment from './hooks/usePayment'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FieldValues, useForm } from 'react-hook-form'
 import { apiClient } from "./services/api-client"
 import toast, { Toaster } from "react-hot-toast"
+import { User } from "./hooks/useUser"
+import { SetStateAction, Dispatch } from "react"
 
-const Payment = ({ userId }: { userId: string }) => {
-  const { payments, error, isLoading } = usePayment(userId)
-  if (isLoading) return <div>Loading...</div>
+type Props = {
+  userId: string,
+  setUser: Dispatch<SetStateAction<User>>
+}
 
+const Payment = ({ userId, setUser }: Props) => {
   const paymentData = z.object({
     account: z.string().min(24, { message: "Account number should be 24 characters long." }).max(24, { message: "Account number should be 24 characters long." }),
 
@@ -28,6 +31,7 @@ const Payment = ({ userId }: { userId: string }) => {
       receiver: data.account,
       amount: data.amount
     }).then(data => {
+      setUser(data.data[0])
       toast.success('Payment Sucessful')
     }).catch((err) => toast.error(err.response?.data))
   }

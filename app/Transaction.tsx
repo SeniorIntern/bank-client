@@ -1,9 +1,9 @@
-import { Button, Table, Text } from '@radix-ui/themes'
+import { Table, Text } from '@radix-ui/themes'
 import usePayment from './hooks/usePayment'
 import { formatedDate } from './helpers/formatedDate'
 
 const Transaction = ({ userId }: { userId: string }) => {
-  const { payments, error, isLoading } = usePayment(userId)
+  const { payments, isLoading } = usePayment(userId)
   if (isLoading) return <div>Loading...</div>
 
   return (

@@ -15,7 +15,7 @@ const Dashboard = () => {
   const searchParams = useSearchParams()
   const action = searchParams.get('action')
   const { token } = useUserStore()
-  const { user, isLoading } = useUser(token)
+  const { user, setUser, isLoading } = useUser(token)
 
   if (isLoading) return <div>Loading...</div>
 
@@ -88,7 +88,7 @@ const Dashboard = () => {
 
               {
                 action === 'statement' ? <Statement userId={user._id} />
-                  : action === 'payment' ? <Payment userId={user._id} />
+                  : action === 'payment' ? <Payment userId={user._id} setUser={setUser} />
                     : <Transaction userId={user._id} />
               }
 
