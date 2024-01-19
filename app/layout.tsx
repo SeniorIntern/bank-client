@@ -4,6 +4,7 @@ import './globals.css'
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
 import NavBar from './NavBar';
+import UserBar from './UserBar';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <div className='bg-[var(--primary-black)]'>
           <Theme>
             <NavBar />
+            <UserBar />
             {children}
           </Theme>
         </div>
