@@ -14,7 +14,7 @@ type Payment = {
     gender: string,
     title: string,
     postCode: string,
-    countryOfBirth: string,
+    cob: string,
   },
   target: string,
   entry: string,

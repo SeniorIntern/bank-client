@@ -2,12 +2,19 @@ import { useEffect, useState } from "react"
 import { apiClient } from '../services/api-client'
 import { CanceledError } from "axios"
 
-type User = {
+export type User = {
   _id: string,
   name: string,
   email: string,
   accountType: string,
-  balance: number
+  balance: number,
+  gender: string,
+  title: string,
+  postCode: string,
+  cob: string
+  dob: string,
+  phone: string,
+  address: string
 }
 
 const useUser = (token: string) => {
@@ -34,7 +41,7 @@ const useUser = (token: string) => {
     return () => controller.abort()
   }, [])
 
-  return { user, error, isLoading }
+  return { user, setUser, error, isLoading }
 }
 
 export default useUser

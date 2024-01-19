@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { apiClient } from '../services/api-client'
 import { CanceledError } from "axios"
 
-type Payment = {
+export type Payment = {
   _id: string,
   party: {
     _id: string,
@@ -14,7 +14,7 @@ type Payment = {
     gender: string,
     title: string,
     postCode: string,
-    countryOfBirth: string,
+    cob: string,
   },
   target: string,
   entry: string,
@@ -44,7 +44,7 @@ const usePayment = (userId: string) => {
     return () => controller.abort()
   }, [userId])
 
-  return { payments, error, isLoading }
+  return { payments, setPayments, error, isLoading }
 }
 
 export default usePayment
